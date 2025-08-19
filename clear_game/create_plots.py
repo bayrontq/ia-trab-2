@@ -72,7 +72,7 @@ def plot_training_evolution(history_file: str = None):
         plt.title('Zoom: Últimas 50 Iterações')
         plt.grid(True, alpha=0.3)
     else:
-        plt.plot(iterations, best_fitness, 'b-', linewidth=2)
+        plt.plot(iterations, best_scores, 'b-', linewidth=2)
         plt.xlabel('Iteração')
         plt.ylabel('Melhor Pontuação')
         plt.title('Evolução Completa')

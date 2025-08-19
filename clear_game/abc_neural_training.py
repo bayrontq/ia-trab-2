@@ -385,8 +385,8 @@ def main():
     test_score = fitness_function(best_weights)
     print(f"Score de teste: {test_score:.2f}")
     
-    return best_weights, best_fitness, history
+    return best_weights, best_score, history
 
 
 if __name__ == "__main__":
-    best_weights, best_fitness, history = main()
+    best_weights, best_score, history = main()
