@@ -117,6 +117,13 @@ Este script automaticamente:
 - **Agente Neural:** Implementado em `clear_game/game/agents.py`
 - **Interface Agent:** Método `predict()` conforme especificado
 - **Arquitetura:** 27 → 32 → 16 → 3 neurônios (1.475 parâmetros)
+
+#### 🧮 Detalhamento dos 1.475 Parâmetros:
+- **Entrada (27):** Grade 5×5 (25) + posição Y + velocidade (2)
+- **Camada 1:** 27→32 = 864 pesos + 32 biases = **896 parâmetros**
+- **Camada 2:** 32→16 = 512 pesos + 16 biases = **528 parâmetros**  
+- **Camada 3:** 16→3 = 48 pesos + 3 biases = **51 parâmetros**
+- **Total:** 896 + 528 + 51 = **1.475 parâmetros otimizados pelo ABC**
 - **Estado:** 27 elementos (grade 5×5 + 2 variáveis internas)
 - **Ações:** 0=noop, 1=cima, 2=baixo
 
