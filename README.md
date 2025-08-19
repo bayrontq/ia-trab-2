@@ -46,6 +46,7 @@ ia-trab-2/
 ├── abc_neural_training.py         # ✅ Treinamento ABC fora da pasta game
 ├── evaluation_30_runs.py          # ✅ Avaliação com 30 execuções
 ├── create_plots.py                # ✅ Gráficos de evolução e boxplots
+├── watch_agent.py                 # ✅ Visualização do agente jogando
 ├── main_projeto.py                # ✅ Script principal
 └── README.md                      # ✅ Esta documentação
 ```
@@ -76,6 +77,29 @@ python3 evaluation_30_runs.py
 ```bash
 python3 create_plots.py
 ```
+
+### 6. Interface Visual (Opcional)
+
+#### Jogar Manualmente
+```bash
+cd clear_game
+python3 human_play.py
+```
+**Controles:**
+- ↑ (seta para cima): mover para cima
+- ↓ (seta para baixo): mover para baixo
+- Fechar janela: sair do jogo
+
+#### Ver Agente Neural Jogando
+```bash
+python3 watch_agent.py
+```
+
+Este script automaticamente:
+- ✅ Carrega os pesos treinados (se disponíveis)
+- ✅ Mostra a grade sensorial do agente
+- ✅ Exibe o score em tempo real
+- ✅ Funciona com pesos aleatórios se não houver treinamento
 
 ## Requisitos Atendidos
 
