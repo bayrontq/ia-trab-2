@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""
-Script para visualizar o agente neural jogando
+"""Sistema de Treinamento ABC + Rede Neural
 Trabalho 2 - Inteligência Artificial e Sistemas Inteligentes
-Matrícula: 2025130736
+Bayron Thiengo Quinelato - 2025130736
 """
 
 import sys
 import os
 import glob
 import numpy as np
-
-# Adicionar path do jogo
-sys.path.append('clear_game')
 
 from game.core import SurvivalGame, GameConfig
 from game.agents import NeuralNetworkAgent
@@ -50,8 +46,8 @@ def main():
     
     # Configurar jogo visual
     config = GameConfig(
-        render_grid=True,    # Mostrar grade sensorial
-        fps=60              # 60 FPS para visualização suave
+        render_grid=True, # Mostrar grade sensorial
+        fps=60            # 60 FPS para visualização suave
     )
     
     game = SurvivalGame(config, render=True)

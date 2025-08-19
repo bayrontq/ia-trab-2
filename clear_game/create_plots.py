@@ -1,7 +1,7 @@
 """
-Sistema de Geração de Gráficos
+Sistema de Treinamento ABC + Rede Neural
 Trabalho 2 - Inteligência Artificial e Sistemas Inteligentes
-Matrícula: 2025130736
+Bayron Thiengo Quinelato - 2025130736
 
 Conforme requisitos:
 - Gráfico da evolução do agente (eixo x = iteração, eixo y = melhor pontuação)
@@ -36,22 +36,25 @@ def plot_training_evolution(history_file: str = None):
     with open(history_file, 'rb') as f:
         history = pickle.load(f)
     
-    best_fitness = history['best_fitness_history']
-    iterations = list(range(len(best_fitness)))
+    # Compatibilidade com ambos os formatos (antigo e novo)
+    best_scores = history.get('best_score_history', history.get('best_fitness_history', []))
+    iterations = list(range(len(best_scores)))
     
     # Criar gráfico
     plt.figure(figsize=(12, 8))
     
     # Gráfico principal
     plt.subplot(2, 1, 1)
-    plt.plot(iterations, best_fitness, 'b-', linewidth=2, label='Melhor Fitness')
+    plt.plot(iterations, best_scores, 'b-', linewidth=2, label='Melhor Pontuação')
     
-    if 'fitness_history' in history:
-        plt.plot(iterations, history['fitness_history'], 'r--', 
-                linewidth=1, alpha=0.7, label='Fitness Médio')
+    # Adicionar pontuação média se disponível
+    mean_scores = history.get('mean_score_history', history.get('fitness_history', []))
+    if mean_scores:
+        plt.plot(iterations, mean_scores, 'r--', 
+                linewidth=1, alpha=0.7, label='Pontuação Média')
     
     plt.xlabel('Iteração')
-    plt.ylabel('Melhor Pontuação Obtida')
+    plt.ylabel('Pontuação')
     plt.title('Evolução do Agente Neural com ABC\n(Matrícula: 2025130736)', fontsize=14)
     plt.legend()
     plt.grid(True, alpha=0.3)
@@ -61,9 +64,9 @@ def plot_training_evolution(history_file: str = None):
     if len(iterations) > 50:
         start_idx = max(0, len(iterations) - 50)
         zoom_iter = iterations[start_idx:]
-        zoom_fitness = best_fitness[start_idx:]
+        zoom_scores = best_scores[start_idx:]
         
-        plt.plot(zoom_iter, zoom_fitness, 'b-', linewidth=2)
+        plt.plot(zoom_iter, zoom_scores, 'b-', linewidth=2)
         plt.xlabel('Iteração')
         plt.ylabel('Melhor Pontuação')
         plt.title('Zoom: Últimas 50 Iterações')

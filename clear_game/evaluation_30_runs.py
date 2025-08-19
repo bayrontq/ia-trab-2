@@ -1,7 +1,7 @@
 """
-Sistema de Avaliação com 30 Execuções e Análise Estatística
+Sistema de Treinamento ABC + Rede Neural
 Trabalho 2 - Inteligência Artificial e Sistemas Inteligentes
-Matrícula: 2025130736
+Bayron Thiengo Quinelato - 2025130736
 
 Conforme requisitos:
 - 30 execuções para cada agente
@@ -15,9 +15,6 @@ import sys
 import os
 from typing import List, Dict
 from scipy import stats
-
-# Adicionar o diretório do jogo ao path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'clear_game'))
 
 from game.core import SurvivalGame, GameConfig
 from game.agents import NeuralNetworkAgent

@@ -1,9 +1,9 @@
 """
-Script Principal do Trabalho 2
+Sistema de Treinamento ABC + Rede Neural
 Trabalho 2 - Inteligência Artificial e Sistemas Inteligentes
-Matrícula: 2025130736
+Bayron Thiengo Quinelato - 2025130736
 
-Implementação conforme Item 2:
+Conforme requisitos:
 - Utiliza códigos fornecidos como biblioteca
 - Implementa agente em agents.py
 - Trabalha fora da pasta game
@@ -40,9 +40,6 @@ def check_neural_agent():
     print("-" * 50)
     
     try:
-        # Adicionar path do jogo
-        sys.path.append(os.path.join(os.path.dirname(__file__), 'clear_game'))
-        
         from game.agents import NeuralNetworkAgent
         import numpy as np
         

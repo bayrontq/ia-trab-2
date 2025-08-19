@@ -18,11 +18,11 @@
 clear_game/game/agents.py
 ```
 
-✅ **Trabalho fora da pasta `game`:**
-- `abc_neural_training.py` - Sistema de treinamento
-- `evaluation_30_runs.py` - Avaliação com 30 execuções
-- `create_plots.py` - Geração de gráficos
-- `main_projeto.py` - Script principal
+✅ **Trabalho dentro de `clear_game/` (pasta raiz dos fontes):**
+- `clear_game/abc_neural_training.py` - Sistema de treinamento
+- `clear_game/evaluation_30_runs.py` - Avaliação com 30 execuções
+- `clear_game/create_plots.py` - Geração de gráficos
+- `clear_game/main_projeto.py` - Script principal
 
 ✅ **Arquivos do jogo não alterados:** `config.py` e `core.py` mantidos inalterados.
 
@@ -35,45 +35,55 @@ clear_game/game/agents.py
 
 ```
 ia-trab-2/
-├── clear_game/                    # ✅ Código base (não alterado)
-│   └── game/
-│       ├── agents.py              # ✅ NeuralNetworkAgent implementado
-│       ├── config.py              # ✅ Não alterado
-│       └── core.py                # ✅ Não alterado
+├── clear_game/                    # 📁 PASTA RAIZ DOS FONTES
+│   ├── game/
+│   │   ├── agents.py              # ✅ NeuralNetworkAgent implementado
+│   │   ├── config.py              # ✅ Não alterado
+│   │   └── core.py                # ✅ Não alterado
+│   │
+│   ├── abc_neural_training.py     # ✅ Treinamento ABC
+│   ├── evaluation_30_runs.py      # ✅ Avaliação com 30 execuções
+│   ├── create_plots.py            # ✅ Gráficos de evolução e boxplots
+│   ├── watch_agent.py             # ✅ Visualização do agente jogando
+│   ├── main_projeto.py            # ✅ Script principal
+│   ├── *.npy                      # Pesos treinados salvos
+│   ├── *.pkl                      # Histórico de treinamento
+│   └── *.png                      # Gráficos gerados
 │
 ├── game_with_sample_agent/        # ✅ Exemplo fornecido (não alterado)
-│
-├── abc_neural_training.py         # ✅ Treinamento ABC fora da pasta game
-├── evaluation_30_runs.py          # ✅ Avaliação com 30 execuções
-├── create_plots.py                # ✅ Gráficos de evolução e boxplots
-├── watch_agent.py                 # ✅ Visualização do agente jogando
-├── main_projeto.py                # ✅ Script principal
+├── artigo_trabalho2.tex           # ✅ Artigo acadêmico (Item 4)
+├── ARTIGO_README.md               # ✅ Instruções para compilar artigo
 └── README.md                      # ✅ Esta documentação
 ```
 
 ## Como Executar
 
-### 1. Teste Rápido (Verificar Implementação)
+### 1. Entrar na pasta raiz dos fontes
+```bash
+cd clear_game/
+```
+
+### 2. Teste Rápido (Verificar Implementação)
 ```bash
 python3 main_projeto.py --quick-test
 ```
 
-### 2. Execução Completa
+### 3. Execução Completa
 ```bash
 python3 main_projeto.py
 ```
 
-### 3. Executar Apenas Treinamento
+### 4. Executar Apenas Treinamento
 ```bash
 python3 abc_neural_training.py
 ```
 
-### 4. Executar Apenas Avaliação
+### 5. Executar Apenas Avaliação
 ```bash
 python3 evaluation_30_runs.py
 ```
 
-### 5. Executar Apenas Gráficos
+### 6. Executar Apenas Gráficos
 ```bash
 python3 create_plots.py
 ```
@@ -126,6 +136,15 @@ Este script automaticamente:
 - **Gráfico de evolução:** Iteração vs Melhor Pontuação
 - **Boxplots:** Comparação entre agentes
 - **Conforme exemplo:** Apêndice A dos requisitos
+
+### ✅ Artigo Acadêmico (Item 4)
+- **Arquivo:** `artigo_trabalho2.tex` (LaTeX)
+- **Template:** Baseado em `elsarticle-template`
+- **Extensão:** 12 páginas (expandido conforme novos requisitos)
+- **Figuras:** Incluídas e explicadas (evolução + boxplots)
+- **Tabelas:** Resultados experimentais detalhados
+- **Análise:** Crítica aprofundada dos resultados e limitações
+- **Compilação:** Instruções em `ARTIGO_README.md`
 
 ## Exemplo de Uso do Agente
 

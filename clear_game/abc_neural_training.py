@@ -1,9 +1,9 @@
 """
 Sistema de Treinamento ABC + Rede Neural
 Trabalho 2 - Inteligência Artificial e Sistemas Inteligentes
-Matrícula: 2025130736
+Bayron Thiengo Quinelato - 2025130736
 
-Implementação conforme requisitos do item 2:
+Conforme requisitos:
 - Utiliza o jogo como biblioteca
 - Implementa ABC sem bibliotecas externas
 - Trabalha fora da pasta game
@@ -16,9 +16,6 @@ import sys
 import os
 import pickle
 from datetime import datetime
-
-# Adicionar o diretório do jogo ao path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'clear_game'))
 
 from game.core import SurvivalGame, GameConfig
 from game.agents import NeuralNetworkAgent
@@ -60,13 +57,13 @@ class ArtificialBeeColony:
         self.fitness_values = None
         self.trial_counters = None
         self.best_solution = None
-        self.best_fitness = -np.inf
+        self.best_score = 0.0
         self.iteration = 0
         self.start_time = None
         
         # Histórico para gráficos
-        self.fitness_history = []
-        self.best_fitness_history = []
+        self.best_score_history = []
+        self.mean_score_history = []
     
     def initialize_population(self):
         """Fase de Inicialização: Equação (1) do artigo ABC"""
@@ -75,17 +72,16 @@ class ArtificialBeeColony:
             self.bounds[1], 
             (self.colony_size, self.dimension)
         )
-        self.fitness_values = np.full(self.colony_size, -np.inf)
+        self.fitness_values = np.zeros(self.colony_size)
         self.trial_counters = np.zeros(self.colony_size, dtype=int)
         
         print(f"População ABC inicializada: {self.colony_size} abelhas, {self.dimension} parâmetros")
     
     def calculate_fitness(self, objective_value: float) -> float:
-        """Calcula fitness: Equação (3) do artigo"""
-        if objective_value >= 0:
-            return 1.0 / (1.0 + objective_value)
-        else:
-            return 1.0 + abs(objective_value)
+        """
+        Calcula fitness para MAXIMIZAÇÃO de score
+        """
+        return max(1e-12, float(objective_value))
     
     def employed_bees_phase(self, fitness_function):
         """Fase das Abelhas Trabalhadoras: Equação (2) do artigo"""
@@ -119,8 +115,8 @@ class ArtificialBeeColony:
                 self.trial_counters[i] = 0
                 
                 # Atualizar melhor global
-                if candidate_fitness > self.best_fitness:
-                    self.best_fitness = candidate_fitness
+                if candidate_fitness > self.best_score:
+                    self.best_score = candidate_fitness
                     self.best_solution = candidate.copy()
             else:
                 self.trial_counters[i] += 1
@@ -162,13 +158,13 @@ class ArtificialBeeColony:
                 self.fitness_values[selected_idx] = candidate_fitness
                 self.trial_counters[selected_idx] = 0
                 
-                if candidate_fitness > self.best_fitness:
-                    self.best_fitness = candidate_fitness
+                if candidate_fitness > self.best_score:
+                    self.best_score = candidate_fitness
                     self.best_solution = candidate.copy()
             else:
                 self.trial_counters[selected_idx] += 1
     
-    def scout_bees_phase(self):
+    def scout_bees_phase(self, fitness_function):
         """Fase das Abelhas Exploradoras"""
         for i in range(self.colony_size):
             if self.trial_counters[i] >= self.limit:
@@ -176,8 +172,15 @@ class ArtificialBeeColony:
                 self.population[i] = np.random.uniform(
                     self.bounds[0], self.bounds[1], self.dimension
                 )
-                self.fitness_values[i] = -np.inf
+
+                objective = fitness_function(self.population[i])
+                self.fitness_values[i] = self.calculate_fitness(objective)
                 self.trial_counters[i] = 0
+                
+                # Verificar se é novo melhor global
+                if self.fitness_values[i] > self.best_score:
+                    self.best_score = self.fitness_values[i]
+                    self.best_solution = self.population[i].copy()
     
     def should_stop(self) -> bool:
         """Critérios de parada: 1000 iterações OU 12 horas"""
@@ -215,8 +218,8 @@ class ArtificialBeeColony:
             objective = fitness_function(self.population[i])
             self.fitness_values[i] = self.calculate_fitness(objective)
             
-            if self.fitness_values[i] > self.best_fitness:
-                self.best_fitness = self.fitness_values[i]
+            if self.fitness_values[i] > self.best_score:
+                self.best_score = self.fitness_values[i]
                 self.best_solution = self.population[i].copy()
         
         # Loop principal ABC
@@ -226,12 +229,12 @@ class ArtificialBeeColony:
             # Três fases do ABC
             self.employed_bees_phase(fitness_function)
             self.onlooker_bees_phase(fitness_function)
-            self.scout_bees_phase()
+            self.scout_bees_phase(fitness_function)
             
             # Registrar histórico
-            mean_fitness = np.mean(self.fitness_values)
-            self.fitness_history.append(mean_fitness)
-            self.best_fitness_history.append(self.best_fitness)
+            mean_score = np.mean(self.fitness_values)
+            self.mean_score_history.append(mean_score)
+            self.best_score_history.append(self.best_score)
             
             # Progresso
             if verbose and (self.iteration % 10 == 0 or self.iteration < 5):
@@ -239,8 +242,8 @@ class ArtificialBeeColony:
                 iter_time = time.time() - iteration_start
                 
                 print(f"Iter {self.iteration:4d} | "
-                      f"Melhor: {self.best_fitness:.6f} | "
-                      f"Média: {mean_fitness:.6f} | "
+                      f"Melhor: {self.best_score:.6f} | "
+                      f"Média: {mean_score:.6f} | "
                       f"Tempo: {elapsed:.2f}h | "
                       f"({iter_time:.1f}s/iter)")
             
@@ -253,13 +256,13 @@ class ArtificialBeeColony:
             print(f"TREINAMENTO CONCLUÍDO:")
             print(f"Iterações: {self.iteration}")
             print(f"Tempo total: {elapsed_total:.2f}h")
-            print(f"Melhor fitness: {self.best_fitness:.6f}")
+            print(f"Melhor pontuação: {self.best_score:.6f}")
             
             criterio = "Tempo" if elapsed_total >= self.max_time_hours else "Iterações"
             print(f"Critério de parada: {criterio}")
             print("="*60)
         
-        return self.best_solution, self.best_fitness
+        return self.best_solution, self.best_score
 
 
 class GameFitnessEvaluator:
@@ -344,7 +347,7 @@ def main():
     )
     
     # Executar treinamento
-    best_weights, best_fitness = abc.optimize(fitness_function)
+    best_weights, best_score = abc.optimize(fitness_function)
     
     # Salvar resultados
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -356,9 +359,9 @@ def main():
     
     # Salvar histórico
     history = {
-        'best_fitness_history': abc.best_fitness_history,
-        'fitness_history': abc.fitness_history,
-        'final_fitness': best_fitness,
+        'best_score_history': abc.best_score_history,
+        'mean_score_history': abc.mean_score_history,
+        'final_score': best_score,
         'iterations': abc.iteration,
         'total_time_hours': (time.time() - abc.start_time) / 3600,
         'config': {
