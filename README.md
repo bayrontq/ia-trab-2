@@ -1,7 +1,7 @@
 # Trabalho 2 - Agente Neural com Colônia de Abelhas
 
 ## Identificação
-- **Matrícula:** 2025130736 (termina em 6)
+- **Matrícula:** Termina em 6
 - **Metaheurística:** Colônia de Abelhas (ABC)
 - **Classificador:** Rede Neural
 - **Jogo:** Space Invaders Simplificado
